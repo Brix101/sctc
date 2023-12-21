@@ -1,6 +1,6 @@
 {
-  "id": "5bc02c7b-b190-4467-9fed-24f637ab54d1",
-  "prevId": "55f79424-f8bc-4138-9ef4-5f214e6142f2",
+  "id": "75f1e8bf-269c-4d9a-a7b8-014cdb452d48",
+  "prevId": "e1938a54-6a53-40c8-9082-da17f8665dc2",
   "version": "5",
   "dialect": "pg",
   "tables": {
@@ -20,14 +20,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "urlId": {
-          "name": "urlId",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "youtubeUrl": {
-          "name": "youtubeUrl",
+        "description": {
+          "name": "description",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -67,8 +61,14 @@
           "notNull": false,
           "default": "''"
         },
-        "course_id": {
-          "name": "course_id",
+        "link": {
+          "name": "link",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "topic_id": {
+          "name": "topic_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": false
@@ -76,9 +76,81 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "materials_course_id_courses_id_fk": {
-          "name": "materials_course_id_courses_id_fk",
+        "materials_topic_id_topics_id_fk": {
+          "name": "materials_topic_id_topics_id_fk",
           "tableFrom": "materials",
+          "tableTo": "topics",
+          "columnsFrom": [
+            "topic_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "topics": {
+      "name": "topics",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "url_id": {
+          "name": "url_id",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "video_link": {
+          "name": "video_link",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "details": {
+          "name": "details",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "course_id": {
+          "name": "course_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "topics_course_id_courses_id_fk": {
+          "name": "topics_course_id_courses_id_fk",
+          "tableFrom": "topics",
           "tableTo": "courses",
           "columnsFrom": [
             "course_id"
@@ -99,6 +171,8 @@
   "_meta": {
     "schemas": {},
     "tables": {},
-    "columns": {}
+    "columns": {
+      "\"courses\".\"youtube_irl\"": "\"courses\".\"description\""
+    }
   }
 }

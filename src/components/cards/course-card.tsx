@@ -1,54 +1,53 @@
-"use client"
-
-import Image from "next/image"
 import Link from "next/link"
-import * as React from "react"
 
 import { AspectRatio } from "@/components/ui/aspect-ratio"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Course } from "@/db/schema"
+import { getRandomPatternStyle } from "@/lib/generate-pattern"
 import { cn } from "@/lib/utils"
-import { Course } from "@/types"
 
-interface CourseCardProps extends React.HTMLAttributes<HTMLDivElement> {
+interface CourseCardProps {
   course: Course
-  variant?: "default" | "switchable"
-  isAddedToCart?: boolean
-  onSwitch?: () => Promise<void>
+  href: string
 }
 
-export function CourseCard({
-  course,
-  variant = "default",
-  isAddedToCart = false,
-  onSwitch,
-  className,
-  ...props
-}: CourseCardProps) {
+export function CourseCard({ course, href }: CourseCardProps) {
   return (
-    <Card
-      className={cn("h-full w-full overflow-hidden rounded-sm", className)}
-      {...props}
-    >
-      <Link aria-label={course.title} href={`/courses/${course.id}`}>
-        <CardHeader className="border-b p-0">
-          <AspectRatio ratio={4 / 3}>
-            <Image
-              src={`https://img.youtube.com/vi/${course.id}/hqdefault.jpg`}
-              alt={course.title}
-              className="object-cover"
-              sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, (min-width: 475px) 50vw, 100vw"
-              fill
-              loading="lazy"
-            />
-          </AspectRatio>
+    <Link href={href}>
+      <span className="sr-only">{course.name}</span>
+      <Card className="h-full overflow-hidden transition-colors hover:bg-muted/50">
+        <AspectRatio ratio={21 / 9}>
+          <div className="absolute inset-0 bg-gradient-to-t from-transparent to-zinc-950/50" />
+          <Badge
+            className={cn(
+              "pointer-events-none absolute right-2 top-2 rounded-sm px-2 py-0.5 font-semibold",
+              course.active
+                ? "border-green-600/20 bg-green-100 text-green-700"
+                : "border-red-600/10 bg-red-100 text-red-700",
+            )}
+          >
+            {course.active ? "Active" : "Inactive"}
+          </Badge>
+          <div
+            className="h-full rounded-t-md border-b"
+            style={getRandomPatternStyle(String(course.id))}
+          />
+        </AspectRatio>
+        <CardHeader className="space-y-2">
+          <CardTitle className="line-clamp-1">{course.name}</CardTitle>
+          <CardDescription className="line-clamp-1">
+            {course.description?.length
+              ? course.description
+              : `Explore ${course.name} products`}
+          </CardDescription>
         </CardHeader>
-        <span className="sr-only">{course.title}</span>
-      </Link>
-      <Link href={`/course/${course.id}`} tabIndex={-1}>
-        <CardContent className="space-y-1.5 p-4">
-          <CardTitle className="line-clamp-1">{course.title}</CardTitle>
-        </CardContent>
-      </Link>
-    </Card>
+      </Card>
+    </Link>
   )
 }

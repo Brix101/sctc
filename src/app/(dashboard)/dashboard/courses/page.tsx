@@ -1,15 +1,19 @@
 import { env } from "@/env.mjs"
 import type { Metadata } from "next"
+import * as React from "react"
 
-import { courseColumns } from "@/components/data-table/columns/course.columns"
-import { DataTable } from "@/components/data-table/data-table"
+import { CourseCard } from "@/components/cards/course-card"
 import {
   PageHeader,
   PageHeaderDescription,
   PageHeaderHeading,
 } from "@/components/page-header"
 import { Shell } from "@/components/shells/shell"
+import { CourseCardSkeleton } from "@/components/skeletons/course-card-skeleton"
+import { buttonVariants } from "@/components/ui/button"
 import { db } from "@/db"
+import { cn } from "@/lib/utils"
+import Link from "next/link"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -18,11 +22,7 @@ export const metadata: Metadata = {
 }
 
 export default async function CoursesPage() {
-  const allCourses = await db.query.courses.findMany({
-    with: {
-      materials: true,
-    },
-  })
+  const allCourses = await db.query.courses.findMany()
 
   return (
     <Shell variant="sidebar">
@@ -31,17 +31,40 @@ export default async function CoursesPage() {
         aria-labelledby="courses-header-heading"
         separated
       >
-        <PageHeaderHeading size="sm">Courses</PageHeaderHeading>
+        <div className="flex space-x-4">
+          <PageHeaderHeading size="sm" className="flex-1">
+            Courses
+          </PageHeaderHeading>
+          <Link
+            aria-label="Create course"
+            href="/dashboard/courses/new"
+            className={cn(
+              buttonVariants({
+                size: "sm",
+              }),
+            )}
+          >
+            Create course
+          </Link>
+        </div>
         <PageHeaderDescription size="sm">
-          Manage your courses settings
+          Manage your courses
         </PageHeaderDescription>
       </PageHeader>
-      <section
-        id="user-courses-info"
-        aria-labelledby="user-courses-info-heading"
-        className="w-full overflow-hidden"
-      >
-        <DataTable data={allCourses} columns={courseColumns} />
+      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <React.Suspense
+          fallback={Array.from({ length: 3 }).map((_, i) => (
+            <CourseCardSkeleton key={i} />
+          ))}
+        >
+          {allCourses.map(store => (
+            <CourseCard
+              key={store.id}
+              course={store}
+              href={`/dashboard/courses/${store.id}`}
+            />
+          ))}
+        </React.Suspense>
       </section>
     </Shell>
   )

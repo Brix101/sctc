@@ -1,33 +1,40 @@
 {
   "version": "5",
-  "dialect": "mysql",
+  "dialect": "pg",
   "entries": [
     {
       "idx": 0,
       "version": "5",
-      "when": 1702609732521,
-      "tag": "0000_jittery_captain_britain",
+      "when": 1702616186769,
+      "tag": "0000_brave_ben_grimm",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "5",
-      "when": 1702609761453,
-      "tag": "0001_mushy_maximus",
+      "when": 1702616308947,
+      "tag": "0001_rapid_sasquatch",
       "breakpoints": true
     },
     {
       "idx": 2,
       "version": "5",
-      "when": 1702609916527,
-      "tag": "0002_cheerful_medusa",
+      "when": 1702618378904,
+      "tag": "0002_lying_shiver_man",
       "breakpoints": true
     },
     {
       "idx": 3,
       "version": "5",
-      "when": 1702611147320,
-      "tag": "0003_nervous_roughhouse",
+      "when": 1702625414817,
+      "tag": "0003_sharp_lady_bullseye",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1702627404367,
+      "tag": "0004_colorful_darwin",
       "breakpoints": true
     }
   ]

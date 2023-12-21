@@ -1,0 +1,1 @@
+ALTER TABLE "courses" RENAME COLUMN "youtube_irl" TO "description";

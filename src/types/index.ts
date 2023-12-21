@@ -1,5 +1,6 @@
 import type { Icons } from "@/components/icons"
 import { userPrivateMetadataSchema } from "@/lib/validations/auth"
+import { User } from "@clerk/nextjs/server"
 import { HandleOAuthCallbackParams } from "@clerk/types"
 import * as z from "zod"
 
@@ -51,4 +52,31 @@ export type Course = {
 
 export interface SSOCallbackProps {
   searchParams: HandleOAuthCallbackParams
+}
+
+export interface Option {
+  label: string
+  value: string
+  icon?: React.ComponentType<{ className?: string }>
+}
+
+export interface DataTableSearchableColumn<TData> {
+  id: keyof TData
+  title: string
+}
+
+export interface DataTableFilterableColumn<TData>
+  extends DataTableSearchableColumn<TData> {
+  options: Option[]
+}
+
+export type FileWithPreview = File & {
+  preview: string
+}
+
+export type OmitedUser = Omit<
+  User,
+  "emailAddresses" | "externalAccounts" | "primaryEmailAddressId"
+> & {
+  email: string
 }
